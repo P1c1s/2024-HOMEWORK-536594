@@ -4,8 +4,11 @@ import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class Labirinto {
 
-	private Stanza stanzaCorrente;
-	private Stanza stanzaVincente;
+	private Stanza stanzaIniziale;
+	private Stanza stanzaFinale;
+	
+//	private Stanza stanzaCorrente;
+//	private Stanza stanzaVincente;
 	
 	public Labirinto() {
 		creaStanze();
@@ -47,21 +50,25 @@ public class Labirinto {
 
 		// il gioco comincia nell'atrio
         //this.stanzaCorrente = atrio; 
-        this.stanzaCorrente = atrio;
+        this.stanzaIniziale = atrio;
 		//stanzaVincente = biblioteca;
-        this.stanzaVincente = biblioteca;  
+        this.stanzaFinale = biblioteca;  
     }
 
-    public Stanza setStanzaCorrente(Stanza stanzaCorrente){
-    	return this.stanzaCorrente = stanzaCorrente;
+    public Stanza getStanzaIniziale(){
+    	return this.stanzaIniziale;
     }
     
-    public Stanza getStanzaCorrente(){
-    	return this.stanzaCorrente;
+    public Stanza getStanzaFinale(){
+    	return this.stanzaFinale;
     }
-    
-    public Stanza getStanzaVincente(){
-    	return this.stanzaVincente;
-    }
+//    
+//    public Stanza getStanzaCorrente(){
+//    	return this.stanzaCorrente;
+//    }
+//    
+//    public Stanza getStanzaVincente(){
+//    	return this.stanzaVincente;
+//    }
     
 }

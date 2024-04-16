@@ -44,11 +44,16 @@ public class IOConsole {
 	}
 	
 	public void mostraMessaggio(String msg, String color) {
-		System.out.print(customColor(color) + msg + customColor("reset"));
+		System.out.print(customColor(color) + msg + customColor("white"));
 	}
 	
 	public void mostraMessaggioLn(String msg, String color) {
-		System.out.println(customColor(color) + msg + customColor("reset"));
+		System.out.println(customColor(color) + msg + customColor("white"));
+	}
+	
+	public void cancellaSchermo() {
+		   System.out.print("\033[H\033[2J");  
+		   System.out.flush();  
 	}
 	
 	public String leggiRiga() {
@@ -65,5 +70,6 @@ public class IOConsole {
 		//scannerDiLinee.close(); //DA RIVEDERE
 		return riga;
 	}
+	
 	
 }
