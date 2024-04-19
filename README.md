@@ -47,8 +47,17 @@ classDiagram
 	    - int peso;
         + getNome() String
         + getPeso() int
-
     }
 
+    class Borsa{
+		- Attrezzo[] attrezzi;
+		- int numeroAttrezzi;
+		- int pesoMax;
+        + boolean addAttrezzo(Attrezzo attrezzo) boolean
+        + getPesoMax() int
+        + getAttrezzo(String nomeAttrezzo) Attrezzo
+        + isEmpty() boolean
+        + hasAttrezzo(String nomeAttrezzo) boolean
+    }
 
 ```
