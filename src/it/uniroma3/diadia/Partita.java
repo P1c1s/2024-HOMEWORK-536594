@@ -49,7 +49,9 @@ public class Partita {
 			return this.labirinto;
 	}
 	
-	
+	public boolean giocatoreIsVivo() {
+		return (this.giocatore.getCfu() > 0);
+	}
 	
 	/**
 	 * Restituisce vero se e solo se la partita e' stata vinta

@@ -6,8 +6,10 @@ import java.io.*;
 import java.util.*; 
 import java.util.HashMap;
 
-public class IOConsole {
+public class IOConsole implements IO{
 
+	private Scanner scannerDiLinee = new Scanner(System.in);
+	
 	public static String customColor(String color) {  
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("black", "\033[0;30m");
@@ -57,16 +59,13 @@ public class IOConsole {
 	}
 	
 	public String leggiRiga() {
-		Scanner scannerDiLinee = new Scanner(System.in);
-		String riga = scannerDiLinee.nextLine();
-		//scannerDiLinee.close(); // DA RIVEDERE
+		String riga = this.scannerDiLinee.nextLine();
 		return riga;
 	}
 	
 	public String leggiRiga(String color) {
-		System.out.println(customColor(color));
-		Scanner scannerDiLinee = new Scanner(System.in);
-		String riga = scannerDiLinee.nextLine();
+		System.out.print(customColor(color));
+		String riga = this.scannerDiLinee.nextLine();
 		//scannerDiLinee.close(); //DA RIVEDERE
 		return riga;
 	}

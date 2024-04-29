@@ -95,6 +95,11 @@ public class Stanza {
         return this.attrezzi;
     }
 
+    
+    public int getNumeroAttrezzi() {
+		return numeroAttrezzi;
+	}
+    
     /**
      * Mette un attrezzo nella stanza.
      * @param attrezzo l'attrezzo da mettere nella stanza.
@@ -119,7 +124,7 @@ public class Stanza {
     public String toString() {
     	StringBuilder risultato = new StringBuilder();
     	risultato.append(this.nome);
-    	risultato.append("\033[1;37m \nUscite: \033[0;37m");
+    	risultato.append("\033[1;37m\nUscite:\033[0;37m");
     	for (String direzione : this.direzioni)
     		if (direzione!=null)
     			risultato.append(" " + direzione);

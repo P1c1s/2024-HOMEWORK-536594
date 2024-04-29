@@ -11,25 +11,15 @@ public class LabirintoTest {
 	/* testGetsStanza* - INIZIO */
 	
 	@Test
-	public void testGetStanzaCorrente_StanzaIniziale() {
+	public void testGetStanzaIniziale_Atria() {
 		Labirinto labirinto = new Labirinto();
-		assertEquals("Atrio", labirinto.getStanzaCorrente().getNome());
+		assertEquals("Atrio", labirinto.getStanzaIniziale().getNome());
 	}
 	
 	@Test
-	public void testGetStanzaCorrente_StanzaNonIniziale() {
+	public void testGetStanzaFinale_Biblioteca() {
 		Labirinto labirinto = new Labirinto();
-		labirinto.setStanzaCorrente(new Stanza("Aula N1"));
-		assertEquals("Aula N1", labirinto.getStanzaCorrente().getNome());
-	}
-	
-
-	
-	@Test
-	public void testGesStanzaVincente_NotNul() {
-		Labirinto labirinto = new Labirinto();
-		labirinto.setStanzaCorrente(new Stanza("Biblioteca"));
-		assertEquals("Biblioteca", labirinto.getStanzaCorrente().getNome());
+		assertEquals("Biblioteca", labirinto.getStanzaFinale().getNome());
 	}
 	
 	/* testGetsStanza* - FINE */

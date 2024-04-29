@@ -7,8 +7,10 @@ public class Borsa {
 		private Attrezzo[] attrezzi;
 		private int numeroAttrezzi;
 		private int pesoMax;
-		public Borsa() {
-		this(DEFAULT_PESO_MAX_BORSA);
+	
+	
+	public Borsa() {
+			this(DEFAULT_PESO_MAX_BORSA);
 		}
 		
 	public Borsa(int pesoMax) {
@@ -83,7 +85,7 @@ public class Borsa {
 	public String toString() {
 		StringBuilder s = new StringBuilder();
 		if (!this.isEmpty()) {
-			s.append(/*Contenuto borsa*/ "["+this.getPeso()+"kg/"+this.getPesoMax()+"kg] ");
+			s.append("["+this.getPeso()+"kg/"+this.getPesoMax()+"kg] ");
 		for (int i= 0; i<this.numeroAttrezzi; i++)
 			s.append(attrezzi[i].toString()+" ");
 		}
