@@ -8,12 +8,12 @@ public class ComandoPrendi implements Comando {
 
 	private String nomeAttrezzo;
 	private IO io;
-	
+
 	public ComandoPrendi(IO io) {
 		this.io = io;
 	}
-	
-	
+
+
 	@Override
 	public void esegui(Partita partita) {
 		Attrezzo attrezzo = partita.getStanzaCorrente().getAttrezzo(this.nomeAttrezzo);

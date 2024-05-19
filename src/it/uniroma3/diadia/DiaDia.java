@@ -3,10 +3,16 @@ package it.uniroma3.diadia;
 //DA RIVEDERE SE ELIMINARE IMPORT -> SCANNER
 import java.util.Scanner;
 
+import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
+import it.uniroma3.diadia.comandi.Comando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
+
 import it.uniroma3.diadia.ambienti.Stanza;
 //import it.uniroma3.diadia.giocatore.Giocatore;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.*;
+
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -31,25 +37,27 @@ public class DiaDia {
 			"puoi raccoglierli, usarli, posarli quando ti sembrano inutili\n" +
 			"o regalarli se pensi che possano ingraziarti qualcuno.\n\n"+
 			"Per conoscere le istruzioni usa il comando 'aiuto'.";
-	
+
 	private Partita partita;
+	private IO io;
 
-	public DiaDia() {
-		this.partita = new Partita();
+	public DiaDia(IO console, Labirinto labirinto) {
+		this.io = console;
+		this.partita = new Partita(labirinto);
 	}
-
-	public void gioca(IO io) {
-		String istruzione = new String(); 
-		
+	
+	public void gioca() {
+		String istruzione; 
+		//		Scanner scannerDiLinee;
 		io.mostraMessaggioLn(MESSAGGIO_BENVENUTO+"\n", "green");
-
 		do {
 			io.mostraMessaggio("Comando: ", "purple");
 			istruzione = io.leggiRiga("yellow");
 			io.mostraMessaggioLn(" ");
 			io.cancellaSchermo();
-		}
-		while (!processaIstruzione(istruzione, io));
+
+		}while (!processaIstruzione(istruzione, io) );
+
 	}   
 
 	/**
@@ -69,11 +77,23 @@ public class DiaDia {
 		return this.partita.isFinita();
 	}   		
 
-	
-	
+
 	public static void main(String[] argc) {
-		IO io = new IOConsole();
-		DiaDia gioco = new DiaDia();
-		gioco.gioca(io);
+		IO console = new IOConsole();
+		Labirinto labirinto = new LabirintoBuilder()
+				.addStanzaIniziale("Atrio")
+				.addAttrezzo("osso", 3)
+				.addStanzaVincente("Biblioteca")
+				.addStanza("Aula N1")
+				.addStanza("Aula Campus")
+				.addAttrezzo("metaldetector", 3)
+				.addAdiacenza("Atrio", "Aula N1", "sud")
+				.addAdiacenza("Aula N1", "Atrio", "nord")
+				.addAdiacenza("Atrio", "Aula Campus", "est")
+				.addAdiacenza("Aula Campus", "Atrio", "ovest")
+				.addAdiacenza("Atrio", "Biblioteca", "nord")
+				.getLabirinto();
+		DiaDia gioco = new DiaDia(console, labirinto);
+		gioco.gioca();
 	}
 }
