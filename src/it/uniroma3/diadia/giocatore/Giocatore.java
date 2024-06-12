@@ -1,11 +1,12 @@
 package it.uniroma3.diadia.giocatore;
 
+import it.uniroma3.diadia.properties.CaricatoreProperties;
+
 public class Giocatore {
+	static final private int CFU_INIZIALI = CaricatoreProperties.getCFU();
 	
-	static final private int CFU_INIZIALI = 20;
-	
-	private Borsa borsa;
 	private int cfu;
+	private Borsa borsa;
 	
 	public Giocatore() {
 		this.cfu = CFU_INIZIALI;
@@ -13,20 +14,27 @@ public class Giocatore {
 	}
 	
 	public int getCfu() {
-		return this.cfu;
+		return cfu;
 	}
 	
 	public void setCfu(int cfu) {
-		if(cfu <= 20 && cfu >= 0)
-			this.cfu = cfu;		
-	}	
-
-	public void setBorsa(Borsa borsa){
-		this.borsa = borsa;
+		this.cfu = cfu;
 	}
 	
-	public Borsa getBorsa(){
-		return this.borsa;
+	public Borsa getBorsa() {
+		return borsa;
+	}
+	
+	public void setBorsa(Borsa borsa) {
+		this.borsa = borsa;
 	}
 
+	public void riduciCfu() {
+		this.cfu--;
+	}
+	
+	public void riduciCfu(int riduzione) {
+		if(riduzione<=0) return;
+		this.cfu-=riduzione;
+	}
 }

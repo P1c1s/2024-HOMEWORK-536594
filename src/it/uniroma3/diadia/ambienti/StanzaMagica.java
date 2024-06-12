@@ -3,49 +3,39 @@ package it.uniroma3.diadia.ambienti;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class StanzaMagica extends Stanza{
-
 	final static private int SOGLIA_MAGICA_DEFAULT = 3;
 	private int contatoreAttrezziPosati;
 	private int sogliaMagica;
-	
+
 	public StanzaMagica(String nome) {
 		this(nome, SOGLIA_MAGICA_DEFAULT);
 	}
-	
+
 	public StanzaMagica(String nome, int soglia) {
 		super(nome);
 		this.contatoreAttrezziPosati = 0;
 		this.sogliaMagica = soglia;
 	}
-	
+
 	@Override
 	public boolean addAttrezzo(Attrezzo attrezzo) {
-		this.contatoreAttrezziPosati++;
-		if (this.contatoreAttrezziPosati>this.sogliaMagica)
-			attrezzo = this.modificaAttrezzo(attrezzo);
-		return super.addAttrezzo(attrezzo);
+		if(attrezzo==null)
+			return false;
+		else {
+			this.contatoreAttrezziPosati++;
+			if (this.contatoreAttrezziPosati>this.sogliaMagica)
+				attrezzo = this.modificaAttrezzo(attrezzo);
+			return super.addAttrezzo(attrezzo);
+		}
 	}
-	
+
 	private Attrezzo modificaAttrezzo(Attrezzo attrezzo) {
 		StringBuilder nomeInvertito;
 		int pesoX2 = attrezzo.getPeso() * 2;
 		nomeInvertito = new StringBuilder(attrezzo.getNome());
 		nomeInvertito = nomeInvertito.reverse();
-		attrezzo = new Attrezzo(nomeInvertito.toString(), pesoX2);
+		attrezzo = new Attrezzo(nomeInvertito.toString(),pesoX2);
 		return attrezzo;
-		}
-	
-	@Override
-    public String toString() {
-    	String risultato = super.toString();
-    	return risultato.substring(0, risultato.indexOf('U')) 
-    			+ "\033[1;37mDescrizione:\033[0;37m Stanza dove avvengono magie\033[1;37m\n"
-    			+ risultato.substring(risultato.indexOf('U'), risultato.length());	
-    }
-	
-	@Override
-	public String getDescrizione() {
-		return this.toString();
 	}
-	
+
 }

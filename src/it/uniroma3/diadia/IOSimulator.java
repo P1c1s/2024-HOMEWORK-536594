@@ -1,69 +1,51 @@
 package it.uniroma3.diadia;
-import java.util.Scanner;
 
-public class IOSimulator implements IO {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Iterator;
 
-	private Scanner scannerDiLinee; 
-	private String[] messaggio = new String[100];
-	private String comando;
-	private int messaggioCorrente;
+public class IOSimulator implements IO{
+	private List<String> input;
+	private List<String> output;
+	private Iterator<String> countIN;
+	private Iterator<String> countOUT;
 	
-	public IOSimulator(String comando) {
-		this.scannerDiLinee = new Scanner(comando);
-		this.messaggioCorrente = 0;
+	public void setInput(List<String> comandi) {
+		this.input=comandi;
 	}
-
+	
+	public List<String> getOutput() {
+		return output;
+	}
+	
+	public Iterator<String> getCountOUT() {
+		return countOUT;
+	}
+	
 	@Override
 	public String leggiRiga() {
-		if(this.scannerDiLinee.hasNext())
-			comando = this.scannerDiLinee.nextLine();
-		return comando;
-	}
-	
-	@Override
-	public String leggiRiga(String colore) {
-		if(this.scannerDiLinee.hasNext())
-			comando = this.scannerDiLinee.nextLine();
-		return comando;
-	}
+		String riga = null;
 
-	
-	public String getMessaggio(int messaggioCorrente){
-		return this.messaggio[messaggioCorrente];
-	}
-	
-	
-	public String getComando(){
-		return this.comando;
+		if(countIN.hasNext()) riga = countIN.next();
+		return riga;
 	}
 	
 	@Override
 	public void mostraMessaggio(String messaggio) {
-		this.messaggio[this.messaggioCorrente] = messaggio;
-		this.messaggioCorrente+=1;
+		this.output.add(messaggio);
 	}
 	
-	@Override
-	public void mostraMessaggioLn(String messaggio) {
-		this.messaggio[this.messaggioCorrente] = messaggio;
-		this.messaggioCorrente+=1;		
+	public IOSimulator() {
+		this.input = new ArrayList<String>();
+		this.countIN = input.iterator();
+		this.output = new ArrayList<String>();
+		this.countOUT = output.iterator();
 	}
-
-	@Override
-	public void mostraMessaggio(String messaggio, String colore) {
-		this.messaggio[this.messaggioCorrente] = messaggio;
-		this.messaggioCorrente+=1;
+	
+	public IOSimulator(List<String> righeDaLeggere) {
+		this.input = righeDaLeggere;
+		this.countIN = input.iterator();
+		this.output = new ArrayList<String>();
+		this.countOUT = output.iterator();
 	}
-
-	@Override
-	public void mostraMessaggioLn(String messaggio, String colore) {
-		this.messaggio[this.messaggioCorrente] = messaggio;
-		this.messaggioCorrente+=1;
-	}
-
-	@Override
-	public void cancellaSchermo() {
-		// TODO Auto-generated method stub
-	}
-
 }

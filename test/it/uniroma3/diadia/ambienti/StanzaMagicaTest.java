@@ -2,81 +2,53 @@ package it.uniroma3.diadia.ambienti;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class StanzaMagicaTest {
+	private StanzaMagica stanzaMagicaSoglia0;
+	private StanzaMagica stanzaMagicaSogliaStandard;
+	private String nomeAttrezzo;
+	private String nomeAttrezzoInvertito;
+	private Attrezzo attrezzo;
+	private int pesoOriginale;
+	private int pesoDoppio;
 
-
-	
-	/* addAttrezzo - INIZIO */
-	
-	@Test  
-	public void testAddAttrezzo_StanzaVuotaAttrezzoAggiunto(){
-		Attrezzo calamaio = new Attrezzo("calamaio", 1);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		assertTrue(stanzaMagica.addAttrezzo(calamaio));
+	@Before
+	public void setUp() {
+		this.nomeAttrezzo = new String("peso");
+		this.nomeAttrezzoInvertito = new StringBuilder(this.nomeAttrezzo).reverse().toString();
+		this.stanzaMagicaSoglia0 = new StanzaMagica("stanzaMagicaSoglia1",0);
+		this.stanzaMagicaSogliaStandard = new StanzaMagica("stanzaMagicaSogliaStandard");
+		this.attrezzo = new Attrezzo(this.nomeAttrezzo,1);
+		this.pesoOriginale = this.attrezzo.getPeso();
+		this.pesoDoppio = pesoOriginale*2;
 	}
 	
-	@Test  
-	public void testAddAttrezzo_StanzaNonVuotaAttrezzoAggiunto(){
-		Attrezzo calamaio = new Attrezzo("calamaio", 1);
-		Attrezzo penna = new Attrezzo("calamaio", 1);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		stanzaMagica.addAttrezzo(calamaio);
-		assertTrue(stanzaMagica.addAttrezzo(penna));
-	}
-	
-	@Test  
-	public void testAddAttrezzo_StanzaPienaAttrezzoNonInseribile(){
-		Attrezzo calamaio = new Attrezzo("calamaio", 1);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		int i = 0;
-		Attrezzo attrezzo = new Attrezzo("attrezzo"+0, 0);
-		while(stanzaMagica.addAttrezzo(attrezzo)) {
-			i++;
-			attrezzo = new Attrezzo("attrezzo"+i, i);
-		}
-		assertFalse(stanzaMagica.addAttrezzo(calamaio));
+	@Test
+	public void testAddAttrezzo_AttrezzoPosatoSogliaNonSuperataPesoENomeInalterati() {
+		assertTrue(this.stanzaMagicaSogliaStandard.addAttrezzo(attrezzo));
+		assertEquals(this.pesoOriginale,this.stanzaMagicaSogliaStandard.getAttrezzi().get(0).getPeso());
+		assertEquals(this.nomeAttrezzo,this.stanzaMagicaSogliaStandard.getAttrezzi().get(0).getNome());
 	}
 
 	@Test
-	public void testGetAttrezzo_StanzaVuotaAssente() {
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		assertNull(stanzaMagica.getAttrezzo("calamaio"));
+	public void testAddAttrezzoEModificaAttrezzo_AttrezzoPosatoConSogliaSuperataPesoDoppio() {
+		assertTrue(this.stanzaMagicaSoglia0.addAttrezzo(attrezzo));
+		assertEquals(this.pesoDoppio,this.stanzaMagicaSoglia0.getAttrezzi().get(0).getPeso());
 	}
 	
-	@Test  
-	public void testGetAttrezzo_NomeAlDritto() {
-		Attrezzo calamaio = new Attrezzo("calamaio", 0);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		for(int i = 0; i < 2; i++)
-			stanzaMagica.addAttrezzo(new Attrezzo("attrezzo"+i, i));
-		stanzaMagica.addAttrezzo(calamaio);
-		assertEquals("calamaio", stanzaMagica.getAttrezzo("calamaio").getNome());
+	@Test
+	public void testAddAttrezzo_AttrezzoPosatoSogliaSuperataNomeInvertito() {
+		assertTrue(this.stanzaMagicaSoglia0.addAttrezzo(attrezzo));
+		assertEquals(this.nomeAttrezzoInvertito,this.stanzaMagicaSoglia0.getAttrezzi().get(0).getNome());
 	}
 	
-	@Test  
-	public void testGetAttrezzo_NomeAlContrario() {
-		Attrezzo chiave = new Attrezzo("chiave", 0);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		for(int i = 0; i < 3; i++)
-			stanzaMagica.addAttrezzo(new Attrezzo("attrezzo"+i, i));
-		stanzaMagica.addAttrezzo(chiave);
-		assertEquals("evaihc", stanzaMagica.getAttrezzo("evaihc").getNome());
+	@Test
+	public void  testAddAttrezzo_AttrezzoNull() {
+		assertFalse(this.stanzaMagicaSogliaStandard.addAttrezzo(null));
 	}
-	
-	@Test  
-	public void testAddAttrezzo_GetPeso(){
-		Attrezzo chiave = new Attrezzo("chiave", 3);
-		StanzaMagica stanzaMagica = new StanzaMagica("Stanza Magica");
-		for(int i = 0; i < 3; i++)
-			stanzaMagica.addAttrezzo(new Attrezzo("attrezzo"+i, i));
-		stanzaMagica.addAttrezzo(chiave);
-		assertEquals(6, stanzaMagica.getAttrezzo("evaihc").getPeso());
-	}
-	
-	/* addAttrezzo - FINE */
 
 }

@@ -1,18 +1,11 @@
 package it.uniroma3.diadia;
 
-//DA RIVEDERE SE ELIMINARE IMPORT -> SCANNER
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
-import it.uniroma3.diadia.comandi.Comando;
-import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
-
-import it.uniroma3.diadia.ambienti.Stanza;
-//import it.uniroma3.diadia.giocatore.Giocatore;
-import it.uniroma3.diadia.attrezzi.Attrezzo;
-import it.uniroma3.diadia.comandi.*;
-
+import it.uniroma3.diadia.comandi.AbstractComando;
+import it.uniroma3.diadia.comandi.FabbricaDiComandiRiflessiva;
 
 /**
  * Classe principale di diadia, un semplice gioco di ruolo ambientato al dia.
@@ -41,59 +34,44 @@ public class DiaDia {
 	private Partita partita;
 	private IO io;
 
-	public DiaDia(IO console, Labirinto labirinto) {
-		this.io = console;
+	public DiaDia(IO io, Labirinto labirinto) throws FileNotFoundException, FormatoFileNonValidoException{
 		this.partita = new Partita(labirinto);
+		this.io =io;
 	}
-	
-	public void gioca() {
-		String istruzione; 
-		//		Scanner scannerDiLinee;
-		io.mostraMessaggioLn(MESSAGGIO_BENVENUTO+"\n", "green");
+
+	public void gioca() throws Exception {
+		String istruzione;
+
+		io.mostraMessaggio(MESSAGGIO_BENVENUTO);
+		io.mostraMessaggio("Attualmente ti trovi in "+this.partita.getStanzaCorrente().getNome());
 		do {
-			io.mostraMessaggio("Comando: ", "purple");
-			istruzione = io.leggiRiga("yellow");
-			io.mostraMessaggioLn(" ");
-			io.cancellaSchermo();
-
-		}while (!processaIstruzione(istruzione, io) );
-
+			istruzione = io.leggiRiga();
+		}while (!processaIstruzione(istruzione,io));
 	}   
 
-	/**
-	 * Processa una istruzione 
-	 *
-	 * @return true se l'istruzione e' eseguita e il gioco continua, false altrimenti
-	 */
-	private boolean processaIstruzione(String istruzione, IO io) {
-		Comando comandoDaEseguire;
-		FabbricaDiComandi factory = new FabbricaDiComandiFisarmonica(io);
-		comandoDaEseguire = factory.costruisciComando(istruzione);
+	private boolean processaIstruzione(String istruzione,IO io) throws Exception{
+		AbstractComando comandoDaEseguire;
+		FabbricaDiComandiRiflessiva factory = new FabbricaDiComandiRiflessiva();
+
+		comandoDaEseguire = factory.costruisciComando(istruzione,io);
 		comandoDaEseguire.esegui(this.partita);
+		
 		if (this.partita.vinta())
-			io.mostraMessaggioLn("Hai vinto!", "green");
+			io.mostraMessaggio("Hai vinto!!!");
 		if (!this.partita.giocatoreIsVivo())
-			io.mostraMessaggioLn("Hai esaurito i CFU.", "red");
+			io.mostraMessaggio("Hai finito i cfu.\n");
+
 		return this.partita.isFinita();
-	}   		
+	}
 
+	public Partita getPartita() {
+		return this.partita;
+	}
 
-	public static void main(String[] argc) {
-		IO console = new IOConsole();
-		Labirinto labirinto = new LabirintoBuilder()
-				.addStanzaIniziale("Atrio")
-				.addAttrezzo("osso", 3)
-				.addStanzaVincente("Biblioteca")
-				.addStanza("Aula N1")
-				.addStanza("Aula Campus")
-				.addAttrezzo("metaldetector", 3)
-				.addAdiacenza("Atrio", "Aula N1", "sud")
-				.addAdiacenza("Aula N1", "Atrio", "nord")
-				.addAdiacenza("Atrio", "Aula Campus", "est")
-				.addAdiacenza("Aula Campus", "Atrio", "ovest")
-				.addAdiacenza("Atrio", "Biblioteca", "nord")
-				.getLabirinto();
-		DiaDia gioco = new DiaDia(console, labirinto);
+	public static void main(String[] argc) throws Exception {
+		Scanner scanner = new Scanner(System.in);
+		IO io = new IOConsole(scanner);
+		DiaDia gioco = new DiaDia(io, Labirinto.newBuilder().getLabirinto().LabirintoDiaDia());
 		gioco.gioca();
 	}
 }

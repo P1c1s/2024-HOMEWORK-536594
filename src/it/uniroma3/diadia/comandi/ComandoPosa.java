@@ -2,47 +2,36 @@ package it.uniroma3.diadia.comandi;
 
 import it.uniroma3.diadia.IO;
 import it.uniroma3.diadia.Partita;
+
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-
-public class ComandoPosa implements Comando {
-
-	private String nomeAttrezzo;
-	private IO io;
+public class ComandoPosa extends AbstractComando{
 	
 	public ComandoPosa(IO io) {
-		this.io = io;
+		super("posa", io);
 	}
 	
+	public ComandoPosa() {
+		this(null);
+	}
+
 	@Override
 	public void esegui(Partita partita) {
-		Attrezzo attrezzo = partita.getGiocatore().getBorsa().getAttrezzo(this.nomeAttrezzo);
-		if(attrezzo!=null) {
-			if(partita.getGiocatore().getBorsa().removeAttrezzo(this.nomeAttrezzo) != null && 
-				partita.getStanzaCorrente().addAttrezzo(attrezzo))
-				io.mostraMessaggioLn("Attrezzo [" + this.nomeAttrezzo + "] posato nella stanza", "green");
-			else
-				io.mostraMessaggioLn("Errore", "red");
+		if(this.getParametro()==null) {
+			this.getIo().mostraMessaggio("specificare l'attrezzo da posare");
+			return;
 		}
-		else
-			io.mostraMessaggioLn("Attrezzo [" + this.nomeAttrezzo  + "] non presente nella borsa.", "red");
-		
-	}
-
-	@Override
-	public void setParametro(String nomeAttrezzo) {
-		this.nomeAttrezzo = nomeAttrezzo;
-		
-	}
-
-	@Override
-	public String getNome() {
-		return "posa";
-	}
-
-	@Override
-	public String getParametro() {
-		return nomeAttrezzo;
+		if(partita.getGiocatore().getBorsa().isEmpty()) {
+			this.getIo().mostraMessaggio("nessun attrezzo nella borsa");
+			return;
+		}
+		Attrezzo a = partita.getGiocatore().getBorsa().getAttrezzo(this.getParametro());
+		if(a!=null) {
+			partita.getStanzaCorrente().addAttrezzo(a);
+			partita.getGiocatore().getBorsa().removeAttrezzo(this.getParametro());
+			this.getIo().mostraMessaggio(this.getParametro()+" rimosso dalla borsa e posato in "+partita.getStanzaCorrente().getNome());
+		}
+		else this.getIo().mostraMessaggio(this.getParametro() + " non presente in borsa");
 	}
 
 }
